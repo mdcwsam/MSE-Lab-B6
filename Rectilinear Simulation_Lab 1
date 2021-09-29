@@ -1,0 +1,58 @@
+close all
+clear all
+clc
+
+global m c k 
+
+m = 0.28654 ; % kg 
+c = 1.1527; % N*s/m
+k = 799.492; % N/m
+
+tspan=5:0.001:10;
+y0=[0.262 0]; %[rad rad/s]
+
+[T,Y] = ode45(@secondorder,tspan,y0);
+%%
+figure(1)
+%subplot(2,1,1);
+plot(T,Y(:,1),'LineWidth',2)
+hold on;
+grid on;
+xlabel('Time [s]');
+ylabel('Displacement Amplitude [rad]');
+title("ODE45 Simulation: Car 2 Displacement vs. Time");
+
+data = textread('exp2_disk2_test2.txt','','headerlines',22);
+
+
+time = data(:,1);
+force = data(:,2);
+disp = data(:,4);
+velo = data(:,8);
+
+%subplot(2,1,2)
+plot(time, disp)
+xlabel('Time [s]');
+ylabel("Displacement Amplitude [rad]");
+title('Experiment 2 Disk 2 Test 2: Displacement vs. Time');
+legend('Calculated', 'Experimental', 'Location', 'best');
+xlim([5.32,10]);
+hold off;
+
+figure(2)
+%subplot(2,1,1)
+plot(T,Y(:,2),'LineWidth',2,'color','r')
+hold on;
+grid on
+xlabel('Time [s]')
+ylabel('Velocity Amplitude [rad/s]')
+title('ODE45 Simulation: Disk 2 Velocity vs. Time');
+
+%subplot(2,1,2)
+plot(time, velo,'LineWidth',2,'color','c')
+xlabel('Time [s]');
+ylabel("Velocity Amplitude [rad/s]");
+title('Experiment 2 Disk 2 Test 2: Velocity vs. Time');
+legend('Calculated', 'Experimental', 'Location', 'best');
+xlim([5,10]);
+hold off;
