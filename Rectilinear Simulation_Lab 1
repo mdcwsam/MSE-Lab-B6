@@ -1,0 +1,52 @@
+close all
+clear all
+clc
+
+global m c k 
+
+m = 0.605883 ; % kg 
+c = 1.1527; % N*s/m
+k = 799.492; % N/m
+
+tspan=5:0.001:10;
+y0=[0.02 0]; %[m m/s]
+
+[T,Y] = ode45(@secondorder,tspan,y0);
+%%
+figure(1)
+subplot(2,1,1);
+plot(T,Y(:,1),'LineWidth',2)
+grid on;
+xlabel('Time [s]')
+ylabel('Displacement Amplitude [m]')
+title("ODE45 Simulation: Car 2 Displacement vs. Time");
+
+data = textread('exp2_car2_test1.txt','','headerlines',22);
+
+time = data(:,1);
+force = data(:,2);
+disp = data(:,4);
+velo = data(:,8);
+
+subplot(2,1,2)
+plot(time, disp)
+xlabel('Time [s]');
+ylabel("Displacement Amplitude [mm]");
+title('Experiment 2 Car 2 Test 1: Displacement vs. Time');
+xlim([5.32,10]);
+
+
+figure(2)
+subplot(2,1,1)
+plot(T,Y(:,2),'LineWidth',2,'color','r') 		% velocity
+grid on
+xlabel('Time [s]')
+ylabel('Velocity Amplitude [m/s]')
+title('ODE45 Simulation: Car 2 Velocity vs. Time');
+
+subplot(2,1,2)
+plot(time, velo)
+xlabel('Time [s]');
+ylabel("Velocity Amplitude [mm/s]");
+title('Experiment 2 Car 2 Test 1: Velocity vs. Time');
+xlim([5.32,10]);
